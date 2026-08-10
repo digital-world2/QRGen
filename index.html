@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Profile Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4 font-sans">
+
+    <div class="max-w-sm w-full bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+        
+        <!-- Top Cover Header -->
+        <div class="bg-gradient-to-r from-[#0a66c2] to-blue-600 h-32 relative flex justify-center">
+            <div class="absolute -bottom-12 w-24 h-24 bg-white p-1 rounded-full shadow-lg">
+                <div class="w-full h-full bg-slate-100 rounded-full flex items-center justify-center text-[#0a66c2] text-3xl font-bold">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Body -->
+        <div class="pt-14 pb-8 px-6 text-center">
+            <h2 id="cardName" class="text-2xl font-bold text-slate-800">...</h2>
+            <p class="text-xs font-semibold text-[#0a66c2] mt-1 uppercase tracking-wider">Verified Contact Profile</p>
+
+            <!-- Action Buttons Grid (Sim Call, WhatsApp, Map) -->
+            <div class="mt-6 space-y-3">
+                
+                <!-- SIM Direct Call -->
+                <a id="simCallBtn" href="#" class="w-full bg-[#0a66c2] hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-3 text-sm">
+                    <i class="fa-solid fa-phone-flip text-base"></i> Direct Phone Call (SIM)
+                </a>
+
+                <!-- WhatsApp Direct Chat -->
+                <a id="whatsappBtn" href="#" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-3 text-sm">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Open WhatsApp Chat
+                </a>
+
+                <!-- Google Maps Location -->
+                <a id="mapBtn" href="#" target="_blank" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-3 text-sm">
+                    <i class="fa-solid fa-map-location-dot text-lg"></i> Open Location on Map
+                </a>
+
+            </div>
+
+            <!-- Detail Cards -->
+            <div class="mt-6 pt-6 border-t border-slate-100 text-left space-y-3">
+                <div class="flex items-center gap-3 text-slate-600 text-sm">
+                    <i class="fa-solid fa-mobile-screen text-[#0a66c2] w-5"></i>
+                    <span id="displayPhone" class="font-medium">...</span>
+                </div>
+                <div class="flex items-start gap-3 text-slate-600 text-sm">
+                    <i class="fa-solid fa-location-dot text-rose-500 w-5 mt-0.5"></i>
+                    <span id="displayAddress" class="font-medium">...</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bg-slate-50 border-t border-slate-100 py-3 text-center text-xs text-slate-400">
+            Smart Profile Card • Powered by QRGen
+        </div>
+
+    </div>
+
+    <script>
+        // URL Query Parameters Parsing
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name') || 'Guest User';
+        let phone = urlParams.get('phone') || '';
+        const address = urlParams.get('address') || 'Location not specified';
+
+        // Clean Phone number for WhatsApp International Format (+92)
+        let formattedWhatsAppPhone = phone.replace(/[^0-9]/g, '');
+        if (formattedWhatsAppPhone.startsWith('0')) {
+            formattedWhatsAppPhone = '92' + formattedWhatsAppPhone.substring(1);
+        }
+
+        // Set Text Contents
+        document.getElementById('cardName').innerText = name;
+        document.getElementById('displayPhone').innerText = phone;
+        document.getElementById('displayAddress').innerText = address;
+
+        // Action Links Configuration
+        document.getElementById('simCallBtn').href = `tel:${phone}`;
+        document.getElementById('whatsappBtn').href = `https://wa.me/${formattedWhatsAppPhone}?text=${encodeURIComponent('Hello ' + name + ', I scanned your QR Code.')}`;
+        document.getElementById('mapBtn').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+    </script>
+</body>
+</html>
