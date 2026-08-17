@@ -61,12 +61,16 @@
                     <i class="fa-solid fa-phone text-base"></i> Direct Phone Call (SIM)
                 </a>
 
+                <a id="whatsappBtn" href="#" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-3 text-sm">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Open WhatsApp Chat
+                </a>
+
                 <a id="simCall2Btn" href="#" class="w-full bg-qrTeal-dark hover:bg-qrTeal text-white font-semibold py-3 rounded-xl shadow-md transition hidden items-center justify-center gap-3 text-sm">
                     <i class="fa-solid fa-phone text-base"></i> Secondary Phone Call
                 </a>
 
-                <a id="whatsappBtn" href="#" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-3 text-sm">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Open WhatsApp Chat
+                <a id="whatsapp2Btn" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl shadow-md transition hidden items-center justify-center gap-3 text-sm">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Open WhatsApp (Secondary)
                 </a>
 
                 <a id="mapBtn" href="#" target="_blank" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-3 text-sm">
@@ -108,7 +112,7 @@
         let phone2 = urlParams.get('phone2') || '';
         const address = urlParams.get('address') || 'Location not specified';
 
-        // Clean Phone number for WhatsApp International Format (+92)
+        // Clean Primary Phone number for WhatsApp International Format (+92)
         let formattedWhatsAppPhone = phone.replace(/[^0-9]/g, '');
         if (formattedWhatsAppPhone.startsWith('0')) {
             formattedWhatsAppPhone = '92' + formattedWhatsAppPhone.substring(1);
@@ -123,19 +127,32 @@
         document.getElementById('simCallBtn').href = `tel:${phone}`;
         document.getElementById('whatsappBtn').href = `https://wa.me/${formattedWhatsAppPhone}?text=${encodeURIComponent('Hello ' + name + ', I scanned your QR Code.')}`;
         
-        // Map Link Fix
-        document.getElementById('mapBtn').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+        // Map Link Configuration
+        document.getElementById('mapBtn').href = `https://maps.google.com/?q=${encodeURIComponent(address)}`;
 
-        // Handle Secondary Phone Number Logic
+        // Handle Secondary Phone & WhatsApp Number Logic
         if (phone2 && phone2.trim() !== '') {
             document.getElementById('displayPhone2').innerText = phone2;
             document.getElementById('displayPhone2Container').classList.remove('hidden');
             document.getElementById('displayPhone2Container').classList.add('flex');
             
+            // Secondary Call Button
             const simCall2Btn = document.getElementById('simCall2Btn');
             simCall2Btn.href = `tel:${phone2}`;
             simCall2Btn.classList.remove('hidden');
             simCall2Btn.classList.add('flex');
+
+            // Clean Secondary Phone number for WhatsApp
+            let formattedWhatsAppPhone2 = phone2.replace(/[^0-9]/g, '');
+            if (formattedWhatsAppPhone2.startsWith('0')) {
+                formattedWhatsAppPhone2 = '92' + formattedWhatsAppPhone2.substring(1);
+            }
+
+            // Secondary WhatsApp Button
+            const whatsapp2Btn = document.getElementById('whatsapp2Btn');
+            whatsapp2Btn.href = `https://wa.me/${formattedWhatsAppPhone2}?text=${encodeURIComponent('Hello ' + name + ', I scanned your QR Code (Secondary Number).')}`;
+            whatsapp2Btn.classList.remove('hidden');
+            whatsapp2Btn.classList.add('flex');
         }
     </script>
 </body>
